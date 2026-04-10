@@ -1,1 +1,2 @@
-1 | Vikas Choudhari | Computer | Full Stack developer | 8.6 | Placed | IBM
+1 | Vikas Choudhari | Computer | Full Stack | 8.5 | Placed | IBM
+2 | raj | it | xyz | 7.5 | NotPlaced | -

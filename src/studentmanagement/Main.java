@@ -28,8 +28,8 @@ public class Main {
                 case 1: addStudent(list); break;
                 case 2: viewStudents(list); break;
                 case 3: searchStudent(list); break;
-                case 4: updateStudent(); break;
-                case 5: deleteStudent(); break;
+                case 4: updateStudent(list); break;
+                case 5: deleteStudent(list); break;
                 case 6: sortStudents(list); break;
                 case 7: showTopper(list); break;
                 case 8: countStudents(list); break;
@@ -101,85 +101,48 @@ public class Main {
         System.out.println("Student not found!");
     }
 
-    static void updateStudent() {
-        System.out.print("Enter ID to update: ");
+    static void updateStudent(ArrayList<Student> list) {
+        System.out.print("Enter ID: ");
         int id = sc.nextInt();
 
-        ArrayList<Student> list = FileHandler.loadStudents();
-        boolean found = false;
+        for (Student s : list) {
+            if (s.getId() == id) {
+                System.out.println("1. Skills\n2. CGPA\n3. Placement");
+                int ch = sc.nextInt();
 
-        try {
-            ObjectOutputStream tempOut = new ObjectOutputStream(new FileOutputStream("temp.dat"));
-
-            for (Student s : list) {
-                if (s.getId() == id) {
-                    found = true;
-                    sc.nextLine();
-
-                    System.out.print("Enter new Skills: ");
+                sc.nextLine();
+                if (ch == 1) {
+                    System.out.print("Enter Skills: ");
                     s.setSkills(sc.nextLine());
-
-                    System.out.print("Enter new CGPA: ");
+                } else if (ch == 2) {
+                    System.out.print("Enter CGPA: ");
                     s.setCgpa(sc.nextDouble());
-
-                    sc.nextLine();
-                    System.out.print("Enter Placement Status: ");
-                    s.setPlacementStatus(sc.nextLine());
-
-                    System.out.print("Enter Company: ");
-                    s.setCompany(sc.nextLine());
+                } else if (ch == 3) {
+                    System.out.print("Enter Status: ");
+                    String status = sc.nextLine();
+                    s.setPlacementStatus(status);
                 }
-                tempOut.writeObject(s);
+
+                System.out.println("Updated successfully!");
+                return;
             }
-
-            tempOut.close();
-
-            if (found) {
-                new File("students.dat").delete();
-                new File("temp.dat").renameTo(new File("students.dat"));
-                System.out.println("Student updated successfully!");
-            } else {
-                new File("temp.dat").delete();
-                System.out.println("Student not found!");
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error updating!");
         }
+        System.out.println("Student not found!");
     }
 
-    static void deleteStudent() {
-        System.out.print("Enter ID to delete: ");
+    static void deleteStudent(ArrayList<Student> list) {
+        System.out.print("Enter ID: ");
         int id = sc.nextInt();
 
-        ArrayList<Student> list = FileHandler.loadStudents();
-        boolean found = false;
-
-        try {
-            ObjectOutputStream tempOut = new ObjectOutputStream(new FileOutputStream("temp.dat"));
-
-            for (Student s : list) {
-                if (s.getId() == id) {
-                    found = true;
-                    continue; 
-                }
-                tempOut.writeObject(s);
+        Iterator<Student> it = list.iterator();
+        while (it.hasNext()) {
+            if (it.next().getId() == id) {
+                it.remove();
+                System.out.println("Deleted successfully!");
+                return;
             }
-
-            tempOut.close();
-
-            if (found) {
-                new File("students.dat").delete();
-                new File("temp.dat").renameTo(new File("students.dat"));
-                System.out.println("Student deleted successfully!");
-            } else {
-                new File("temp.dat").delete();
-                System.out.println("Student not found!");
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error deleting!");
         }
+        System.out.println("Student not found!");
     }
 
     static void sortStudents(ArrayList<Student> list) {
